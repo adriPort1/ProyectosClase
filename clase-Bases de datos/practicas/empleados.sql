@@ -1,0 +1,87 @@
+﻿DROP DATABASE IF EXISTS empleados;
+CREATE DATABASE IF NOT EXISTS empleados
+	CHARACTER SET utf8
+	COLLATE utf8_spanish_ci;
+
+-- 
+-- Disable foreign keys
+-- 
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+
+-- 
+-- Set character set the client will use to send SQL statements to the server
+--
+SET NAMES 'utf8';
+
+-- 
+-- Set default database
+--
+USE empleados;
+
+--
+-- Definition for table depart
+--
+CREATE TABLE IF NOT EXISTS depart (
+  dept_no INT(11) NOT NULL DEFAULT 0,
+  dnombre VARCHAR(30) DEFAULT NULL,
+  loc VARCHAR(30) DEFAULT NULL,
+  PRIMARY KEY (dept_no)
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 4096
+CHARACTER SET utf8
+COLLATE utf8_spanish_ci;
+
+--
+-- Definition for table emple
+--
+CREATE TABLE IF NOT EXISTS emple (
+  emp_no INT(11) NOT NULL,
+  apellido VARCHAR(50) NOT NULL,
+  oficio VARCHAR(30) DEFAULT NULL,
+  dir INT(11) DEFAULT NULL,
+  fecha_alt DATE DEFAULT NULL,
+  salario INT(11) DEFAULT NULL,
+  comision INT(11) DEFAULT NULL,
+  dept_no INT(11) DEFAULT NULL,
+  PRIMARY KEY (emp_no),
+  CONSTRAINT FK_emple_depart FOREIGN KEY (dept_no)
+    REFERENCES depart(dept_no) ON DELETE RESTRICT ON UPDATE RESTRICT
+)
+ENGINE = INNODB
+AVG_ROW_LENGTH = 1170
+CHARACTER SET utf8
+COLLATE utf8_spanish_ci;
+
+-- 
+-- Dumping data for table depart
+--
+INSERT INTO depart VALUES
+(10, 'CONTABILIDAD', 'SEVILLA'),
+(20, 'INVESTIGACIÓN', 'MADRID'),
+(30, 'VENTAS', 'BARCELONA'),
+(40, 'PRODUCCIÓN', 'BILBAO');
+
+-- 
+-- Dumping data for table emple
+--
+INSERT INTO emple VALUES
+(7369, 'SÁNCHEZ', 'EMPLEADO', 7902, '1990-12-17', 1040, NULL, 20),
+(7499, 'ARROYO', 'VENDEDOR', 7698, '1990-02-20', 1500, 390, 30),
+(7521, 'SALA', 'VENDEDOR', 7698, '1991-02-22', 1625, 650, 30),
+(7566, 'JIMÉNEZ', 'DIRECTOR', 7839, '1991-04-02', 2900, NULL, 20),
+(7654, 'MARTÍN', 'VENDEDOR', 7698, '1991-09-29', 1600, 1020, 30),
+(7698, 'NEGRO', 'DIRECTOR', 7839, '1991-05-01', 3005, NULL, 30),
+(7782, 'CEREZO', 'DIRECTOR', 7839, '1991-06-09', 2885, NULL, 10),
+(7788, 'GIL', 'ANALISTA', 7566, '1991-11-09', 3000, NULL, 20),
+(7839, 'REY', 'PRESIDENTE', NULL, '1991-11-17', 4100, NULL, 10),
+(7844, 'TOVAR', 'VENDEDOR', 7698, '1991-09-08', 1350, 0, 30),
+(7876, 'ALONSO', 'EMPLEADO', 7788, '1991-09-23', 1430, NULL, 20),
+(7900, 'JIMENO', 'EMPLEADO', 7698, '1991-12-03', 1335, NULL, 30),
+(7902, 'FERNÁNDEZ', 'ANALISTA', 7566, '1991-12-03', 3000, NULL, 20),
+(7934, 'MUÑOZ', 'EMPLEADO', 7782, '1992-01-23', 1690, NULL, 10);
+
+-- 
+-- Enable foreign keys
+-- 
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
