@@ -2,8 +2,20 @@ package maquinadechuches;
 
 import java.util.Scanner;
 import javax.swing.JOptionPane;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
 // metodo clase
 public class MaquinaDeChuches {
+    public static Connection conn=null;
+    public static Statement stmt;
+    public static ResultSet rs;
+    public static String url ="jdbc:mysql://localhost:3306/";
+    public static String user="root";
+    public static String password ="";
+    
     public static String[][] nombresGolosinas = {
       {"KitKat", "Chicles de fresa", "Lacasitos", "Palotes"},
       {"Kinder Bueno", "Bolsa variada Haribo", "Chetoos", "Twix"},
@@ -22,18 +34,49 @@ public class MaquinaDeChuches {
       {5,5,5,5},
       {5,5,5,5}
 };
-    
+     public static void bd(){
+      
+        try{
+        conn = DriverManager.getConnection(url,user,password);
+        stmt = conn.createStatement();
+        stmt.execute("CREATE DATABASE IF NOT EXISTS prueba");
+        stmt.execute("USE prueba");
+        stmt.execute("CREATE TABLE IF NOT EXISTS pruebaNG(id int AUTO_INCREMENT, nombre varchar(20), precio double, unidades int)"); 
+        String consulta;
+        for(int i = 0;i<nombresGolosinas.length;i++){
+          for(int j=0;j<nombresGolosinas[0].length;j++){
+          stmt.execute("INSERT INTO pruebaNG (nombre, precio, unidades) VALUES ("+"'"+nombresGolosinas[i][j]+"'" +", "+precio[i][j]+","+unidades[i][j]+");");
+          }
+         }
+        rs= stmt.executeQuery("SELECT * FROM pruebaNG n");
+        rs.close();
+        stmt.close();
+    } catch (SQLException e){
+        System.out.println("Fallo en la conexion");
+        /** finaly para ejecutar el cierre si no se cerró**/
+    } finally{
+        if(conn != null){
+          try{
+              conn.close();
+          }catch (SQLException e){
+              System.out.println("Fallo al cerrar la conxion");
+      }
+     }
+    }
+   }    
     public static void main(String[] args) {
+     bd();
      int opcion;
      String a;
      Scanner sc2;
-    do {
     System.out.println();
     System.out.println("Escoge una de las opciones:");
     System.out.println("Escrbir 1 para pedir golosina si conoces el catalogo");
     System.out.println("Escrbir 2 para conocer las golosinas que tenemos");
     System.out.println("Escribir 3 si eres el tecnico");
-    System.out.println("Escribir 4 para apagar");    
+    System.out.println("Escribir 4 para apagar");
+    do {
+       
     sc2 = new Scanner(System.in);    
     opcion= sc2.nextInt();
     
@@ -52,10 +95,12 @@ public class MaquinaDeChuches {
     }
     }while(opcion!=4);
   }
+    
+    
     public static void tecnico(String a){
         
         if(!a.equals("MaquinaExpendedora2017")){
-            System.out.println("mentiste o te equivocaste");
+            System.out.println("te equivocaste");
         } else{
            rellenar(pedirFila(),pedirColumna() );
         }
@@ -104,7 +149,7 @@ public class MaquinaDeChuches {
         int num2= Integer.parseInt(a.substring(1, 2));
         for(int i=0;i<nombresGolosinas.length;i++){
             for (int j=0;j<nombresGolosinas[0].length;j++){
-                if(i==num1&&j==num2){
+                if(i==num1&&j==num2&&unidades[i][j]>0){
                     System.out.print(nombresGolosinas[i][j]);
                     System.out.println(" y vale "+precio[i][j]);
                     unidades[i][j]=unidades[i][j]-1;
