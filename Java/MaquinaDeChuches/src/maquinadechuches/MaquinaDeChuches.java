@@ -19,7 +19,7 @@ public class MaquinaDeChuches {
     public static String[][] nombresGolosinas = {
       {"KitKat", "Chicles de fresa", "Lacasitos", "Palotes"},
       {"Kinder Bueno", "Bolsa variada Haribo", "Chetoos", "Twix"},
-      {"Kinder Bueno", "M&M'S", "Papa Delta", "Chicles de menta"},
+      {"Kinder Bueno", "MyM,S", "Papa Delta", "Chicles de menta"},
       {"Lacasitos", "Crunch", "Milkybar", "KitKat"}
  }; 
     public static double[][] precio = {
@@ -41,15 +41,21 @@ public class MaquinaDeChuches {
         stmt = conn.createStatement();
         stmt.execute("CREATE DATABASE IF NOT EXISTS prueba");
         stmt.execute("USE prueba");
-        stmt.execute("CREATE TABLE IF NOT EXISTS pruebaNG(id int AUTO_INCREMENT, nombre varchar(20), precio double, unidades int)"); 
-        String consulta;
+        stmt.execute("CREATE TABLE IF NOT EXISTS pruebaNG(id int AUTO_INCREMENT, nombre varchar(100), precio double,unidades int, PRIMARY KEY(id))"); 
+        //String consulta;
         for(int i = 0;i<nombresGolosinas.length;i++){
           for(int j=0;j<nombresGolosinas[0].length;j++){
           stmt.execute("INSERT INTO pruebaNG (nombre, precio, unidades) VALUES ("+"'"+nombresGolosinas[i][j]+"'" +", "+precio[i][j]+","+unidades[i][j]+");");
           }
          }
-        rs= stmt.executeQuery("SELECT * FROM pruebaNG n");
-        rs.close();
+        /*Esto lo uso para comprobar si estan bien introducidos los resultados, 
+        una vez hecho, lo comento  */
+        /*rs= stmt.executeQuery("SELECT nombre FROM pruebaNG ");
+        while(rs.next()){
+            consulta=rs.getString("nombre"); 
+            System.out.print(consulta+" |");
+        }*/
+       // rs.close(); que no se olvide
         stmt.close();
     } catch (SQLException e){
         System.out.println("Fallo en la conexion");
@@ -69,14 +75,15 @@ public class MaquinaDeChuches {
      int opcion;
      String a;
      Scanner sc2;
+
+    do {
     System.out.println();
     System.out.println("Escoge una de las opciones:");
     System.out.println("Escrbir 1 para pedir golosina si conoces el catalogo");
     System.out.println("Escrbir 2 para conocer las golosinas que tenemos");
     System.out.println("Escribir 3 si eres el tecnico");
     System.out.println("Escribir 4 para apagar");
-    do {
-       
+    
     sc2 = new Scanner(System.in);    
     opcion= sc2.nextInt();
     
