@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package examen;
 import java.sql.*;
 import java.sql.Connection;
@@ -11,10 +8,6 @@ import java.sql.Statement;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Programacion
- */
 public class examenP extends javax.swing.JFrame {
     public static Connection conn=null;
     public static Statement stmt;
@@ -104,7 +97,7 @@ public class examenP extends javax.swing.JFrame {
        return false;
    }
    public boolean palabraExiste1(){
-       String palabra= jTextField1.getText();
+       String palabra= jTextField1.getText().toString().toLowerCase();
        int i=0;
        while(i<modelo.getSize()){
            if(modelo.getElementAt(i).toLowerCase().equals(palabra)){
@@ -115,7 +108,7 @@ public class examenP extends javax.swing.JFrame {
        return false;
    }
     public boolean palabraExiste2(){
-       String palabra= jTextField1.getText();
+       String palabra= jTextField1.getText().toString().toLowerCase();
        int i=0;
        while(i<modelo2.getSize()){
            if(modelo2.getElementAt(i).toLowerCase().equals(palabra)){
